@@ -114,7 +114,13 @@ jobs:
         run: qmk compile -kb ${{ matrix.keyboard }} -km manna-harbour_miryoku
       - name: Copy firmware
         run: |
-          cp *_manna-harbour_miryoku.* "${{ steps.inputs.outputs.artifact-dir }}"
+          for file in *.hex *.bin
+          do
+            if [ -f "$file" ]
+            then
+              cp "$file" "${{ steps.inputs.outputs.artifact-dir }}"
+            fi
+          done
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
