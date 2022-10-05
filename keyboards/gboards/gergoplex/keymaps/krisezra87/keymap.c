@@ -21,7 +21,7 @@ enum {
 // thumb modifiers/toggles
 #define KC_GUI_ESC MT(MOD_LGUI, KC_ESC)  // Tap for Esc, hold for GUI (Meta, Command, Win)
 #define KC_ALT_ENT MT(MOD_LALT, KC_ENT)  // Tap for Enter, hold for Alt (Option)
-#define KC_SPE_SPC LT(_SPECIAL, KC_SPC)  // Tap for Space, hold for Special layer
+#define KC_SPE_BSP LT(_SPECIAL, KC_BSPC)  // Tap for backspace, hold for Special layer
 #define KC_NUM_SPC LT(_NUMBERS, KC_SPC)  // Tap for Space, hold for Numbers layer
 #define KC_SFT_TAB MT(MOD_RSFT, KC_TAB)  // Tap for Tab, hold for Right Shift
 
@@ -57,7 +57,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
          KC_Q,     KC_W,   KC_F,   KC_P,   KC_B,          KC_J,   KC_L,   KC_U,     KC_Y,   KC_SCLN,
          KC_CTL_A, KC_R,   KC_S,   KC_T,   KC_G,          KC_M,   KC_N,   KC_E,     KC_I,   KC_CTL_O,
          KC_SFT_Z, KC_X,   KC_C,   KC_D,   KC_V,          KC_K,   KC_H,   KC_COMMA, KC_DOT, KC_SFT_SL,
-             KC_GUI_ESC, KC_ALT_ENT, KC_SPE_SPC,          KC_NUM_SPC, KC_LSFT, KC_SFT_TAB),
+             KC_GUI_ESC, KC_ALT_ENT, KC_SPE_BSP,          KC_NUM_SPC, KC_LSFT, KC_SFT_TAB),
 
     /* Keymap 1: Special characters layer
      *
