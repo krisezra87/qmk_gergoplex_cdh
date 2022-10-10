@@ -13,8 +13,6 @@ enum {
 };
 
 // alpha hold modifiers
-#define KC_CTL_A  MT(MOD_LCTL, KC_A)     // Tap for A, hold for Control
-#define KC_CTL_O  MT(MOD_RCTL, KC_O)     // Tap for colon, hold for Control
 #define KC_SFT_Z  MT(MOD_LSFT, KC_Z)     // Tap for Z, hold for Shift
 #define KC_SFT_SL MT(MOD_RSFT, KC_SLSH)  // Tap for slash, hold for Shift
 
@@ -55,7 +53,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [_ALPHA] = LAYOUT_split_3x5_3(
          KC_Q,     KC_W,   KC_F,   KC_P,   KC_B,          KC_J,   KC_L,   KC_U,     KC_Y,   KC_SCLN,
-         KC_CTL_A, KC_R,   KC_S,   KC_T,   KC_G,          KC_M,   KC_N,   KC_E,     KC_I,   KC_CTL_O,
+         KC_A, KC_R,   KC_S,   KC_T,   KC_G,          KC_M,   KC_N,   KC_E,     KC_I,   KC_O,
          KC_SFT_Z, KC_X,   KC_C,   KC_D,   KC_V,          KC_K,   KC_H,   KC_COMMA, KC_DOT, KC_SFT_SL,
              KC_GUI_ESC, KC_LSFT, KC_SPE_BSP,          KC_NUM_SPC, KC_ALT_ENT, KC_SFT_TAB),
 
