@@ -46,7 +46,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * | SHFT Z|  X  |  C  |  D  |  V  |      |  K  |  H  |  <  |  >  |SHFT / |
      * `-------------------------------'      `-------------------------------'
      *   .------------------------------.    .----------------------.
-     *   | ESC META | SHFT    |BSPC SPE |    | SPC NUM |ENT ALT| TAB|
+     *   | SPE ALT  | SHFT    |  BSPC   |    |   SPC   |ENT ALT| TAB|
      *   '------------------------------'    '----------------------'
      *   Probably want ENT/META on a key, and Alt or new layer?
      */
