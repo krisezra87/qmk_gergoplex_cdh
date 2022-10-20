@@ -18,22 +18,7 @@ enum {
 
 // thumb modifiers/toggles
 #define KC_GUI_ENT MT(MOD_LGUI, KC_ENT)  // Tap for Enter, hold for GUI (Meta, Command, Win)
-#define KC_SPE_ALT LT(_SPECIAL, MOD_LALT)  // Tap for backspace, hold for Special layer
 #define KC_SFT_TAB MT(MOD_RSFT, KC_TAB)  // Tap for Tab, hold for Right Shift
-
-    /* Combomap
-     *
-     * ,-------------------------------.      ,-------------------------------.
-     * |       |    ESC    |     |     |      |     |    ESC    |     \       |
-     * |-------+-----+-----+-----+-----|      |-----+-----+-----+-----+-------|
-     * |       |   BSPC   TAB    |     |      |     <     :     >     |       |
-     * |-------+-----+-----+-RMB-+-LMB-|      |ENTER+-----+-----+-----+-------|
-     * |       |     -   ENTER   |     |      |     '     _     |     |       |
-     * `-------------------------------'      `-------------------------------'
-     *            .-----------------.            .-----------------.
-     *            |     |     |     |            |     |     |     |
-     *            '-----------------'            '-----------------'
-     */
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Keymap 0: Alpha layer / Colemak DHm
@@ -41,20 +26,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * ,-------------------------------.      ,-------------------------------.
      * |     Q |  W  |  F  |  P  |  B  |      |  J  |  L  |  U  |  Y  |   ;   |
      * |-------+-----+-----+-----+-----|      |-----+-----+-----+-----+-------|
-     * | CTRL A|  R  |  S  |  T  |  G  |      |  M  |  N  |  E  |  I  |   O   |
+     * | ALT  A|  R  |  S  |  T  |  G  |      |  M  |  N  |  E  |  I  | ALT O |
      * |-------+-----+-----+-----+-----|      |-----+-----+-----+-----+-------|
      * | SHFT Z|  X  |  C  |  D  |  V  |      |  K  |  H  |  <  |  >  |SHFT / |
      * `-------------------------------'      `-------------------------------'
      *   .------------------------------.    .----------------------.
-     *   | SPE ALT  | SHFT    |  BSPC   |    |   SPC   |ENT ALT| TAB|
+     *   | SPECIAL  | SHFT    |  BSPC   |    |   SPC   |ENT ALT| TAB|
      *   '------------------------------'    '----------------------'
      *   Probably want ENT/META on a key, and Alt or new layer?
      */
     [_ALPHA] = LAYOUT_split_3x5_3(
-         KC_Q          , KC_W   , KC_F      , KC_P      , KC_B      , KC_J       , KC_L, KC_U    , KC_Y  , KC_SCLN  ,
-         KC_A          , KC_R   , KC_S      , KC_T      , KC_G      , KC_M       , KC_N, KC_E    , KC_I  , KC_O     ,
-         KC_SFT_Z      , KC_X   , KC_C      , KC_D      , KC_V      , KC_K       , KC_H, KC_COMMA, KC_DOT, KC_SFT_SL,
-             KC_SPE_ALT, OSM(MOD_LSFT), KC_BSPC, KC_SPC, KC_GUI_ENT, KC_SFT_TAB),
+         KC_Q            , KC_W         , KC_F   , KC_P  , KC_B      , KC_J       , KC_L , KC_U    , KC_Y  , KC_SCLN  ,
+         MT(MOD_LALT     ,KC_A)         , KC_R   , KC_S  , KC_T      , KC_G       , KC_M , KC_N    , KC_E  , KC_I     , MT(MOD_RALT,KC_O) ,
+         KC_SFT_Z        , KC_X         , KC_C   , KC_D  , KC_V      , KC_K       , KC_H , KC_COMMA, KC_DOT, KC_SFT_SL,
+             TO(_SPECIAL), OSM(MOD_LSFT), KC_BSPC, KC_SPC, KC_GUI_ENT, KC_SFT_TAB),
 
     /* Keymap 1: Special characters layer
      *
@@ -66,14 +51,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |    %  |  ^  |  [  |  ]  | LMB |      |  &  |  =  |  ,  |  .  |   -   |
      * `-------------------------------'      `-------------------------------'
      *     .-------------------------.          .-----------------.
-     *     | ComboToggle |  ;  |  =  |          |  =  |  ;  | DEL |
+     *     | TO_ALPHA    |  ;  |  =  |          |  =  |  ;  | DEL |
      *     '-------------------------'          '-----------------'
      */
     [_SPECIAL] = LAYOUT_split_3x5_3(
          KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE,          KC_GRV,  KC_TILD, KC_TRNS, KC_TRNS, KC_BSLS,
          KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_BTN2,          KC_PLUS, KC_MINS, KC_SLSH, KC_ASTR, KC_QUOT,
          KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_BTN1,          KC_AMPR, KC_EQL,  KC_COMM, KC_DOT,  KC_MINS,
-                            CMB_TOG, KC_SCLN, KC_EQL,          KC_EQL, KC_SCLN, KC_DEL),
+                            TO(_ALPHA), KC_SCLN, KC_EQL,          KC_EQL, KC_SCLN, KC_DEL),
+
+    /* In case you want to see how to turn combos on or off */
+    /* CMB_TOG, KC_SCLN, KC_EQL,          KC_EQL, KC_SCLN, KC_DEL), */
 
     /* Keymap 2: Numbers/Function/Motion layer
      *
