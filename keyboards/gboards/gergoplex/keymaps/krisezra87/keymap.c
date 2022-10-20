@@ -50,10 +50,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
 
     [_SPECIAL] = LAYOUT_split_3x5_3(
-         MT(KC_GRV,KC_EXLM), KC_AT  , KC_HASH   , KC_DLR , KC_PERC, /**/ KC_CIRC, KC_AMPR     , KC_ASTR     , MT(KC_EQL,KC_MINS), KC_BSLS,
-         KC_TAB            , KC_TRNS, KC_LCTL   , KC_LALT, KC_DEL , /**/ KC_H   , RALT_T(KC_J), RCTL_T(KC_K), KC_L              , KC_QUOT,
-         LSFT_T(KC_GRV)    , KC_TRNS, S(KC_LBRC), KC_LPRN, KC_LBRC, /**/ KC_RBRC, KC_RPRN     , S(KC_RBRC)  , KC_MINS           , RSFT_T(KC_EQL),
-                              TO(_NUMBERS), TO(_ALPHA), KC_TRNS   , /**/ KC_TRNS, KC_TRNS, KC_TRNS),
+         KC_EXLM       , KC_AT  , KC_HASH   , KC_DLR , KC_PERC, /**/ KC_CIRC, KC_AMPR     , KC_ASTR     , KC_MINS, KC_BSLS,
+         KC_TAB        , KC_TRNS, KC_LCTL   , KC_LALT, KC_DEL , /**/ KC_H   , RALT_T(KC_J), RCTL_T(KC_K), KC_L   , KC_QUOT,
+         LSFT_T(KC_GRV), KC_TRNS, S(KC_LBRC), KC_LPRN, KC_LBRC, /**/ KC_RBRC, KC_RPRN     , S(KC_RBRC)  , KC_MINS, RSFT_T(KC_EQL),
+                             TO(_NUMBERS), TO(_ALPHA), KC_TRNS, /**/ KC_TRNS, KC_TRNS, KC_TRNS),
 
 
     /* Keymap 2: Numbers/Motion layer
@@ -75,3 +75,43 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, /**/ KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_TRNS,
                    TO(_SPECIAL), TO(_ALPHA), KC_TRNS, /**/ KC_TRNS, KC_TRNS, KC_TRNS)
 };
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LT(0,KC_X):
+            if (!record->tap.count && record->event.pressed) {
+                tap_code16(C(KC_X)); // Intercept hold function to send Ctrl-X
+                return false;
+            }
+            return true;             // Return true for normal processing of tap keycode
+        case LT(0,KC_C):
+            if (!record->tap.count && record->event.pressed) {
+                tap_code16(C(KC_C)); // Intercept hold function to send Ctrl-C
+                return false;
+            }
+            return true;             // Return true for normal processing of tap keycode
+        case LT(0,KC_V):
+            if (!record->tap.count && record->event.pressed) {
+                tap_code16(C(KC_V)); // Intercept hold function to send Ctrl-V
+                return false;
+            }
+            return true;             // Return true for normal processing of tap keycode
+        case LT(0,KC_MINS):
+            if (record->tap.count && record->event.pressed) {
+                return true; // Return true for normal processing of tap keycode
+                break;
+            } else if (record->event.pressed) {
+                tap_code16(KC_EQUAL); // Intercept hold function to send +
+                return false;
+            }
+        case LT(0,KC_EXLM):
+            if (record->tap.count && record->event.pressed) {
+                return true; // Return true for normal processing of tap keycode
+                break;
+            } else if (record->event.pressed) {
+                tap_code16(KC_GRV); // Intercept hold function to send `
+                return false;
+            }
+    }
+    return true;
+}
