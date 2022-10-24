@@ -49,9 +49,9 @@ uint16_t COMBO_LEN = COMBO_LENGTH;
 #define COMB K_COMB
 #define SUBS A_COMB
 #define TOGG A_COMB
-combo_t key_combos[] = {
-#include "combos.def"
-};
+// combo_t key_combos[] = {
+// #include "combos.def"
+// };
 #undef COMB
 #undef SUBS
 #undef TOGG
@@ -66,7 +66,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
     }
 
     // Allow user overrides per keymap
-#if __has_include("inject.h") 
+#if __has_include("inject.h")
 # include "inject.h"
 #endif
 }
