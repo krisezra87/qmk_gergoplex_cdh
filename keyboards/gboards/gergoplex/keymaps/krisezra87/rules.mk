@@ -8,6 +8,7 @@ VERBOSE                = no
 DEBUG_MATRIX_SCAN_RATE = no
 DEBUG_MATRIX           = no
 CONSOLE_ENABLE         = no
+TAP_DANCE_ENABLE       = yes
 
 #Combos!
 COMBO_ENABLE = no
