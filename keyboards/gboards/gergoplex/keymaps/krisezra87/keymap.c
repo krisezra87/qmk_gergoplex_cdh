@@ -171,36 +171,37 @@ td_state_t cur_dance(qk_tap_dance_state_t *state) {
 }
 
 // Create an instance of 'td_tap_t' for the 'x' tap dance.
-static td_tap_t ttap_state = {
+static td_tap_t tap_state = {
     .is_press_action = true,
     .state = TD_NONE
 };
 
-void generic_reset(qk_tap_dance_state_t *state, void *user_data, uint16_t keycode) {
-    switch (ttap_state.state) {
-        case TD_SINGLE_TAP: unregister_code(keycode); break;
-        case TD_SINGLE_HOLD: unregister_code16(LALT(keycode)); break;
-        case TD_DOUBLE_TAP: unregister_code(keycode); break;
-        case TD_DOUBLE_HOLD: unregister_code16(LSA(keycode)); break;
-        case TD_DOUBLE_SINGLE_TAP: unregister_code(keycode); break;
-        default: break;
-    }
-    ttap_state.state = TD_NONE;
-}
-
 void generic_finished(qk_tap_dance_state_t *state, void *user_data, uint16_t keycode) {
-    ttap_state.state = cur_dance(state);
-    switch (ttap_state.state) {
+    tap_state.state = cur_dance(state);
+    switch (tap_state.state) {
         case TD_SINGLE_TAP: register_code(keycode); break;
         case TD_SINGLE_HOLD: register_code16(LALT(keycode)); break;
         case TD_DOUBLE_TAP: tap_code(keycode); register_code(keycode); break;
         case TD_DOUBLE_HOLD: register_code16(LSA(keycode)); break;
-        // Last case is for fast typing. Assuming your key is `f`:
-        // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
-        // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
+        case TD_TRIPLE_TAP: tap_code(keycode); tap_code(keycode); register_code(keycode); break;
+        case TD_TRIPLE_HOLD: tap_code16(LSA(keycode)); register_code16(LALT(keycode)); break;
         case TD_DOUBLE_SINGLE_TAP: tap_code(keycode); register_code(keycode); break;
         default: break;
     }
+}
+
+void generic_reset(qk_tap_dance_state_t *state, void *user_data, uint16_t keycode) {
+    switch (tap_state.state) {
+        case TD_SINGLE_TAP: unregister_code(keycode); break;
+        case TD_SINGLE_HOLD: unregister_code16(LALT(keycode)); break;
+        case TD_DOUBLE_TAP: unregister_code(keycode); break;
+        case TD_DOUBLE_HOLD: unregister_code16(LSA(keycode)); break;
+        case TD_TRIPLE_TAP: unregister_code(keycode); break;
+        case TD_TRIPLE_HOLD: unregister_code16(LALT(keycode)); break;
+        case TD_DOUBLE_SINGLE_TAP: unregister_code(keycode); break;
+        default: break;
+    }
+    tap_state.state = TD_NONE;
 }
 
 void z_finished(qk_tap_dance_state_t *state, void *user_data) {
