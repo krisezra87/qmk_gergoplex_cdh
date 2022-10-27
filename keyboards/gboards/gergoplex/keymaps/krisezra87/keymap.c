@@ -26,7 +26,16 @@ enum {
     _ALPHA,     // default (Colemak DHm)
     _SPECIAL,   // special characters
     _NUMBERS,   // numbers/function/motion
-    T_CTL
+    DWM_0,
+    DWM_1,
+    DWM_2,
+    DWM_3,
+    DWM_4,
+    DWM_5,
+    DWM_6,
+    DWM_7,
+    DWM_8,
+    DWM_9
 };
 
 td_state_t cur_dance(qk_tap_dance_state_t *state);
@@ -91,7 +100,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *            '--------------------'      '-----------------'
      */
     [_NUMBERS] = LAYOUT_split_3x5_3(
-         KC_1   , TD(T_CTL)   , KC_3           , KC_4         , KC_5    , /**/ KC_6   , KC_7        , KC_8        , KC_9   , KC_0   ,
+         TD(DWM_1)   , TD(DWM_2)   , TD(DWM_3)           , TD(DWM_4)         , TD(DWM_5)    , /**/ TD(DWM_6)   , TD(DWM_7)        , TD(DWM_8)        , TD(DWM_9)   , TD(DWM_0)   ,
          KC_TRNS, KC_LEFT, LCTL_T(KC_DOWN), LALT_T(KC_UP), KC_RIGHT, /**/ KC_H   , RALT_T(KC_J), RCTL_T(KC_K), KC_L   , KC_TRNS,
          KC_TRNS, KC_BTN2, KC_BTN3        , KC_BTN1      , KC_TRNS , /**/ KC_MS_L, KC_MS_D     , KC_MS_U     , KC_MS_R, KC_TRNS,
                                   TO(_SPECIAL), TO(_ALPHA), KC_TRNS, /**/ KC_TRNS, KC_TRNS, KC_TRNS)
@@ -167,33 +176,112 @@ static td_tap_t ttap_state = {
     .state = TD_NONE
 };
 
-void t_finished(qk_tap_dance_state_t *state, void *user_data) {
-    ttap_state.state = cur_dance(state);
+void generic_reset(qk_tap_dance_state_t *state, void *user_data, uint16_t keycode) {
     switch (ttap_state.state) {
-        case TD_SINGLE_TAP: register_code(KC_2); break;
-        case TD_SINGLE_HOLD: register_code16(LALT(KC_2)); break;
-        case TD_DOUBLE_TAP: tap_code(KC_2); register_code(KC_2); break;
-        case TD_DOUBLE_HOLD: register_code16(LSA(KC_2)); break;
-        // Last case is for fast typing. Assuming your key is `f`:
-        // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
-        // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
-        case TD_DOUBLE_SINGLE_TAP: tap_code(KC_2); register_code(KC_2); break;
-        default: break;
-    }
-}
-
-void t_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (ttap_state.state) {
-        case TD_SINGLE_TAP: unregister_code(KC_2); break;
-        case TD_SINGLE_HOLD: unregister_code16(LALT(KC_2)); break;
-        case TD_DOUBLE_TAP: unregister_code(KC_2); break;
-        case TD_DOUBLE_HOLD: unregister_code16(LSA(KC_2)); break;
-        case TD_DOUBLE_SINGLE_TAP: unregister_code(KC_2); break;
+        case TD_SINGLE_TAP: unregister_code(keycode); break;
+        case TD_SINGLE_HOLD: unregister_code16(LALT(keycode)); break;
+        case TD_DOUBLE_TAP: unregister_code(keycode); break;
+        case TD_DOUBLE_HOLD: unregister_code16(LSA(keycode)); break;
+        case TD_DOUBLE_SINGLE_TAP: unregister_code(keycode); break;
         default: break;
     }
     ttap_state.state = TD_NONE;
 }
 
+void generic_finished(qk_tap_dance_state_t *state, void *user_data, uint16_t keycode) {
+    ttap_state.state = cur_dance(state);
+    switch (ttap_state.state) {
+        case TD_SINGLE_TAP: register_code(keycode); break;
+        case TD_SINGLE_HOLD: register_code16(LALT(keycode)); break;
+        case TD_DOUBLE_TAP: tap_code(keycode); register_code(keycode); break;
+        case TD_DOUBLE_HOLD: register_code16(LSA(keycode)); break;
+        // Last case is for fast typing. Assuming your key is `f`:
+        // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
+        // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
+        case TD_DOUBLE_SINGLE_TAP: tap_code(keycode); register_code(keycode); break;
+        default: break;
+    }
+}
+
+void z_finished(qk_tap_dance_state_t *state, void *user_data) {
+    generic_finished(state,user_data,KC_0);
+}
+void z_reset(qk_tap_dance_state_t *state, void *user_data) {
+    generic_reset(state,user_data,KC_0);
+}
+
+void o_finished(qk_tap_dance_state_t *state, void *user_data) {
+    generic_finished(state,user_data,KC_1);
+}
+void o_reset(qk_tap_dance_state_t *state, void *user_data) {
+    generic_reset(state,user_data,KC_1);
+}
+
+void t_finished(qk_tap_dance_state_t *state, void *user_data) {
+    generic_finished(state,user_data,KC_2);
+}
+void t_reset(qk_tap_dance_state_t *state, void *user_data) {
+    generic_reset(state,user_data,KC_2);
+}
+
+void h_finished(qk_tap_dance_state_t *state, void *user_data) {
+    generic_finished(state,user_data,KC_3);
+}
+void h_reset(qk_tap_dance_state_t *state, void *user_data) {
+    generic_reset(state,user_data,KC_3);
+}
+
+void f_finished(qk_tap_dance_state_t *state, void *user_data) {
+    generic_finished(state,user_data,KC_4);
+}
+void f_reset(qk_tap_dance_state_t *state, void *user_data) {
+    generic_reset(state,user_data,KC_4);
+}
+
+void i_finished(qk_tap_dance_state_t *state, void *user_data) {
+    generic_finished(state,user_data,KC_5);
+}
+void i_reset(qk_tap_dance_state_t *state, void *user_data) {
+    generic_reset(state,user_data,KC_5);
+}
+
+void s_finished(qk_tap_dance_state_t *state, void *user_data) {
+    generic_finished(state,user_data,KC_6);
+}
+void s_reset(qk_tap_dance_state_t *state, void *user_data) {
+    generic_reset(state,user_data,KC_6);
+}
+
+void e_finished(qk_tap_dance_state_t *state, void *user_data) {
+    generic_finished(state,user_data,KC_7);
+}
+void e_reset(qk_tap_dance_state_t *state, void *user_data) {
+    generic_reset(state,user_data,KC_7);
+}
+
+void g_finished(qk_tap_dance_state_t *state, void *user_data) {
+    generic_finished(state,user_data,KC_8);
+}
+void g_reset(qk_tap_dance_state_t *state, void *user_data) {
+    generic_reset(state,user_data,KC_8);
+}
+
+void n_finished(qk_tap_dance_state_t *state, void *user_data) {
+    generic_finished(state,user_data,KC_9);
+}
+void n_reset(qk_tap_dance_state_t *state, void *user_data) {
+    generic_reset(state,user_data,KC_9);
+}
+
 qk_tap_dance_action_t tap_dance_actions[] = {
-    [T_CTL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, t_finished, t_reset)
+    [DWM_0] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, z_finished, z_reset),
+    [DWM_1] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, o_finished, o_reset),
+    [DWM_2] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, t_finished, t_reset),
+    [DWM_3] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, h_finished, h_reset),
+    [DWM_4] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, f_finished, f_reset),
+    [DWM_5] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, i_finished, i_reset),
+    [DWM_6] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, s_finished, s_reset),
+    [DWM_7] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, e_finished, e_reset),
+    [DWM_8] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, g_finished, g_reset),
+    [DWM_9] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, n_finished, n_reset)
 };
