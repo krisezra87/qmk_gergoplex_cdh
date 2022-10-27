@@ -26,14 +26,14 @@ enum {
     _ALPHA,     // default (Colemak DHm)
     _SPECIAL,   // special characters
     _NUMBERS,   // numbers/function/motion
-    X_CTL
+    T_CTL
 };
 
 td_state_t cur_dance(qk_tap_dance_state_t *state);
 
 // For the x tap dance. Put it here so it can be used in any keymap
-void x_finished(qk_tap_dance_state_t *state, void *user_data);
-void x_reset(qk_tap_dance_state_t *state, void *user_data);
+void t_finished(qk_tap_dance_state_t *state, void *user_data);
+void t_reset(qk_tap_dance_state_t *state, void *user_data);
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Keymap 0: Alpha layer / Colemak DHm
@@ -91,7 +91,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *            '--------------------'      '-----------------'
      */
     [_NUMBERS] = LAYOUT_split_3x5_3(
-         KC_1   , KC_2   , KC_3           , KC_4         , KC_5    , /**/ KC_6   , KC_7        , KC_8        , KC_9   , KC_0   ,
+         KC_1   , TD(T_CTL)   , KC_3           , KC_4         , KC_5    , /**/ KC_6   , KC_7        , KC_8        , KC_9   , KC_0   ,
          KC_TRNS, KC_LEFT, LCTL_T(KC_DOWN), LALT_T(KC_UP), KC_RIGHT, /**/ KC_H   , RALT_T(KC_J), RCTL_T(KC_K), KC_L   , KC_TRNS,
          KC_TRNS, KC_BTN2, KC_BTN3        , KC_BTN1      , KC_TRNS , /**/ KC_MS_L, KC_MS_D     , KC_MS_U     , KC_MS_R, KC_TRNS,
                                   TO(_SPECIAL), TO(_ALPHA), KC_TRNS, /**/ KC_TRNS, KC_TRNS, KC_TRNS)
@@ -162,38 +162,38 @@ td_state_t cur_dance(qk_tap_dance_state_t *state) {
 }
 
 // Create an instance of 'td_tap_t' for the 'x' tap dance.
-static td_tap_t xtap_state = {
+static td_tap_t ttap_state = {
     .is_press_action = true,
     .state = TD_NONE
 };
 
-void x_finished(qk_tap_dance_state_t *state, void *user_data) {
-    xtap_state.state = cur_dance(state);
-    switch (xtap_state.state) {
-        case TD_SINGLE_TAP: register_code(KC_X); break;
-        case TD_SINGLE_HOLD: register_code(KC_LCTL); break;
-        case TD_DOUBLE_TAP: register_code(KC_ESC); break;
-        case TD_DOUBLE_HOLD: register_code(KC_LALT); break;
+void t_finished(qk_tap_dance_state_t *state, void *user_data) {
+    ttap_state.state = cur_dance(state);
+    switch (ttap_state.state) {
+        case TD_SINGLE_TAP: register_code(KC_2); break;
+        case TD_SINGLE_HOLD: register_code16(LALT(KC_2)); break;
+        case TD_DOUBLE_TAP: tap_code(KC_2); register_code(KC_2); break;
+        case TD_DOUBLE_HOLD: register_code16(LSA(KC_2)); break;
         // Last case is for fast typing. Assuming your key is `f`:
         // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
         // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
-        case TD_DOUBLE_SINGLE_TAP: tap_code(KC_X); register_code(KC_X); break;
+        case TD_DOUBLE_SINGLE_TAP: tap_code(KC_2); register_code(KC_2); break;
         default: break;
     }
 }
 
-void x_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (xtap_state.state) {
-        case TD_SINGLE_TAP: unregister_code(KC_X); break;
-        case TD_SINGLE_HOLD: unregister_code(KC_LCTL); break;
-        case TD_DOUBLE_TAP: unregister_code(KC_ESC); break;
-        case TD_DOUBLE_HOLD: unregister_code(KC_LALT); break;
-        case TD_DOUBLE_SINGLE_TAP: unregister_code(KC_X); break;
+void t_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (ttap_state.state) {
+        case TD_SINGLE_TAP: unregister_code(KC_2); break;
+        case TD_SINGLE_HOLD: unregister_code16(LALT(KC_2)); break;
+        case TD_DOUBLE_TAP: unregister_code(KC_2); break;
+        case TD_DOUBLE_HOLD: unregister_code16(LSA(KC_2)); break;
+        case TD_DOUBLE_SINGLE_TAP: unregister_code(KC_2); break;
         default: break;
     }
-    xtap_state.state = TD_NONE;
+    ttap_state.state = TD_NONE;
 }
 
 qk_tap_dance_action_t tap_dance_actions[] = {
-    [X_CTL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, x_finished, x_reset)
+    [T_CTL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, t_finished, t_reset)
 };
