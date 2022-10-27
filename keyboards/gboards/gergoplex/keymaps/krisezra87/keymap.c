@@ -68,22 +68,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Keymap 1: Special characters layer
      *
      * ,-------------------------------.      ,-------------------------------.
-     * |  ` !  |  @  |  #  |  $  |  %  |      |  ^  |  &  |  *  | - = |   \   |
+     * |   !   |  @  |  #  |  $  |  %  |      |  ^  |  &  |  *  |  -  |   \   |
      * |-------+-----+-----+-----+-----|      |-----+-----+-----+-----+-------|
-     * |  TAB  |     | LCTL| LALT| DEL |      |  H  |  J  |  K  |  L  |   '   |
+     * |  TAB  |     |  {  |  (  |  [  |      |  ]  |  )  |  }  |     |   '   |
      * |-------+-----+-----+-----+-----|      |-----+-----+-----+-----+-------|
-     * | SHFT `|     |  {  |  (  |  [  |      |  ]  |  )  |  }  |  -  | SHFT =|
+     * | SHFT `|     | LCTL| LALT| DEL |      |     |     |     |  -  | SHFT =|
      * `-------------------------------'      `-------------------------------'
      *             .-------------------.      .-----------------.
-     *             |NUMBERS| ESC |     |      |     |     |     |
+     *             |NUMBERS|ALPHA|     |      |     |     |     |
      *             '-------------------'      '-----------------'
      */
 
     [_SPECIAL] = LAYOUT_split_3x5_3(
-         LT(_SPECIAL,S(KC_EXLM)), KC_AT  , KC_HASH   , KC_DLR , KC_PERC, /**/ KC_CIRC, KC_AMPR     , KC_ASTR     , LT(_SPECIAL,KC_MINS), KC_BSLS,
-         KC_TAB                 , KC_TRNS, KC_LCTL   , KC_LALT, KC_DEL , /**/ KC_H   , RALT_T(KC_J), RCTL_T(KC_K), KC_L   , KC_QUOT,
-         LSFT_T(KC_GRV)         , KC_TRNS, S(KC_LBRC), KC_LPRN, KC_LBRC, /**/ KC_RBRC, KC_RPRN     , S(KC_RBRC)  , KC_MINS, RSFT_T(KC_EQL),
-                                      TO(_NUMBERS), TO(_ALPHA), KC_TRNS, /**/ KC_TRNS, KC_TRNS, KC_TRNS),
+         KC_EXLM       , KC_AT  , KC_HASH   , KC_DLR , KC_PERC, /**/ KC_CIRC, KC_AMPR, KC_ASTR   , KC_MINS, KC_BSLS,
+         KC_TAB        , KC_TRNS, S(KC_LBRC), KC_LPRN, KC_LBRC, /**/ KC_RBRC, KC_RPRN, S(KC_RBRC), KC_TRNS, KC_QUOT,
+         LSFT_T(KC_GRV), KC_TRNS, KC_LCTL   , KC_LALT, KC_DEL , /**/ KC_TRNS, KC_TRNS, KC_TRNS   , KC_MINS, RSFT_T(KC_EQL),
+                                             TO(_NUMBERS), TO(_ALPHA), KC_TRNS, /**/ KC_TRNS, KC_TRNS, KC_TRNS),
 
     /* Keymap 2: Numbers/Motion layer
      * NEED TAPDANCE TO ADD ALT TO NUMBERS ON HOLD
@@ -100,10 +100,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *            '--------------------'      '-----------------'
      */
     [_NUMBERS] = LAYOUT_split_3x5_3(
-         TD(DWM_1)   , TD(DWM_2)   , TD(DWM_3)           , TD(DWM_4)         , TD(DWM_5)    , /**/ TD(DWM_6)   , TD(DWM_7)        , TD(DWM_8)        , TD(DWM_9)   , TD(DWM_0)   ,
-         KC_TRNS, KC_LEFT, LCTL_T(KC_DOWN), LALT_T(KC_UP), KC_RIGHT, /**/ KC_H   , RALT_T(KC_J), RCTL_T(KC_K), KC_L   , KC_TRNS,
-         KC_TRNS, KC_BTN2, KC_BTN3        , KC_BTN1      , KC_TRNS , /**/ KC_MS_L, KC_MS_D     , KC_MS_U     , KC_MS_R, KC_TRNS,
-                                  TO(_SPECIAL), TO(_ALPHA), KC_TRNS, /**/ KC_TRNS, KC_TRNS, KC_TRNS)
+         TD(DWM_1), TD(DWM_2), TD(DWM_3)      , TD(DWM_4)    , TD(DWM_5), /**/ TD(DWM_6), TD(DWM_7)   , TD(DWM_8)   , TD(DWM_9), TD(DWM_0),
+         KC_TRNS  , KC_LEFT  , LCTL_T(KC_DOWN), LALT_T(KC_UP), KC_RIGHT , /**/ KC_H     , RALT_T(KC_J), RCTL_T(KC_K), KC_L     , KC_TRNS,
+         KC_TRNS  , KC_BTN2  , KC_BTN3        , KC_BTN1      , KC_TRNS  , /**/ KC_MS_L  , KC_MS_D     , KC_MS_U     , KC_MS_R  , KC_TRNS,
+                                       TO(_SPECIAL), TO(_ALPHA), KC_TRNS, /**/ KC_TRNS, KC_TRNS, KC_TRNS)
 };
 
 /* Abuse the layer trigger function to sort out hold vs tap for some keys */
@@ -127,22 +127,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 return false;
             }
             return true;             // Return true for normal processing of tap keycode
-        case LT(_SPECIAL,KC_MINS):
-            if (record->tap.count && record->event.pressed) {
-                return true; // Return true for normal processing of tap keycode
-                break;
-            } else if (record->event.pressed) {
-                tap_code16(KC_EQUAL); // Intercept hold function to send +
-                return false;
-            }
-        case LT(_SPECIAL,S(KC_EXLM)):
-            if (record->tap.count && record->event.pressed) {
-                return true; // Return true for normal processing of tap keycode
-                break;
-            } else if (record->event.pressed) {
-                tap_code16(KC_GRV); // Intercept hold function to send `
-                return false;
-            }
     }
     return true;
 }
