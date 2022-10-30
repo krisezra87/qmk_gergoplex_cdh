@@ -86,12 +86,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                              TO(_NUMBERS), TO(_ALPHA), KC_TRNS, /**/ KC_TRNS, KC_TRNS, KC_TRNS),
 
     /* Keymap 2: Numbers/Motion layer
-     * NEED TAPDANCE TO ADD ALT TO NUMBERS ON HOLD
      * FIX UP LEFT HAND
      * ,-------------------------------.      ,---------------------------------------.
      * |   1   |  2  |  3  |  4  |  5  |      |  6  |    7    |    8    |  9  |   0   |
      * |-------+-----+-----+-----+-----|      |-----+---------+---------+-----+-------|
-     * |       | LEFT|CTL D|ALT R| UP  |      | H   | ALT J   | CTRL K  | L   |       |
+     * |       | LEFT|CTL D|ALT R| UP  |      | H   |   J     |    K    | L   |       |
      * |-------+-----+-----+-----+-----|      |-----+---------+---------+-----+-------|
      * |       | RMB | MMB | LMB |     |      | MLFT|  MDWN   |  MUP    | MRGT|       |
      * `-------------------------------'      `---------------------------------------'
@@ -101,7 +100,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [_NUMBERS] = LAYOUT_split_3x5_3(
          TD(DWM_1), TD(DWM_2), TD(DWM_3)      , TD(DWM_4)    , TD(DWM_5), /**/ TD(DWM_6), TD(DWM_7)   , TD(DWM_8)   , TD(DWM_9), TD(DWM_0),
-         KC_TRNS  , KC_LEFT  , LCTL_T(KC_DOWN), LALT_T(KC_UP), KC_RIGHT , /**/ KC_H     , RALT_T(KC_J), RCTL_T(KC_K), KC_L     , KC_TRNS,
+         KC_TRNS  , KC_LEFT  , LCTL_T(KC_DOWN), LALT_T(KC_UP), KC_RIGHT , /**/ KC_H     , KC_J, KC_K, KC_L     , KC_TRNS,
          KC_TRNS  , KC_BTN2  , KC_BTN3        , KC_BTN1      , KC_TRNS  , /**/ KC_MS_L  , KC_MS_D     , KC_MS_U     , KC_MS_R  , KC_TRNS,
                                        TO(_SPECIAL), TO(_ALPHA), KC_TRNS, /**/ KC_TRNS, KC_TRNS, KC_TRNS)
 };
