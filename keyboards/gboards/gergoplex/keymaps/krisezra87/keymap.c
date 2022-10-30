@@ -55,14 +55,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * | SHFT Z|  X  |  C  |  D  |  V  |      |  K  |  H  |  <  |  >  |SHFT / |
      * `-------------------------------'      `-------------------------------'
      *               .-----------------.      .----------------.
-     *               |SPECIAL|ESC |BSPC|      |SPC|ENT META|TAB|
+     *               |SPECIAL|ESC |BSPC|      |SPC|ENT META|ESC|
      *               '-----------------'      '----------------'
+     *               TODO: Consider esc key to be always esc on tap always alpha layer on hold
      */
     [_ALPHA] = LAYOUT_split_3x5_3(
          KC_Q        , KC_W      , KC_F        , KC_P        , KC_B      , /**/ KC_J, KC_L        , KC_U        , KC_Y  , KC_SCLN,
          KC_A        , KC_R      , LCTL_T(KC_S), LALT_T(KC_T), KC_G      , /**/ KC_M, RALT_T(KC_N), RCTL_T(KC_E), KC_I  , KC_O,
          LSFT_T(KC_Z), LT(0,KC_X), LT(0,KC_C)  , KC_D        , LT(0,KC_V), /**/ KC_K, KC_H        , KC_COMMA    , KC_DOT, RSFT_T(KC_SLSH),
-                                           OSL(_SPECIAL), KC_ESC, KC_BSPC, /**/ KC_SPC, LGUI_T(KC_ENT), KC_ESC),
+                                           OSL(_SPECIAL), LT(0,KC_ESC), KC_BSPC, /**/ KC_SPC, LGUI_T(KC_ENT), KC_ESC),
 
 
     /* Keymap 1: Special characters layer
@@ -123,6 +124,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case LT(0,KC_V):
             if (!record->tap.count && record->event.pressed) {
                 tap_code16(C(KC_V)); // Intercept hold function to send Ctrl-V
+                return false;
+            }
+            return true;             // Return true for normal processing of tap keycode
+        case LT(0,KC_ESC):
+            if (!record->tap.count && record->event.pressed) {
+                tap_code16(TO(_ALPHA)); // Intercept hold function to send TO(_ALPHA)
                 return false;
             }
             return true;             // Return true for normal processing of tap keycode
