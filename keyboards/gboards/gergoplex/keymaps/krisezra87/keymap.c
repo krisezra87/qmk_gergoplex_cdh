@@ -46,7 +46,7 @@ void t_reset(qk_tap_dance_state_t *state, void *user_data);
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Keymap 0: Alpha layer / Colemak DHm
-     *
+     * TODO: Consider 1 map switching key with tap dance to decide the layer.  Hold = to special, tap = OSL Special, double tap = numbers OSL, double tap hold TO Numbers
      * ,-------------------------------.      ,-------------------------------.
      * |   Q   |  W  |  F  |  P  |  B  |      |  J  |  L  |  U  |  Y  |   ;   |
      * |-------+-----+-----+-----+-----|      |-----+-----+-----+-----+-------|
@@ -76,7 +76,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * | SHFT `|     | LCTL| LALT| DEL |      |     |     |     |  -  | SHFT =|
      * `-------------------------------'      `-------------------------------'
      *             .-------------------.      .-----------------.
-     *             |NUMBERS|ALPHA|     |      |     |     |     |
+     *             |ALPHA|NUMBERS|     |      |     |     |     |
      *             '-------------------'      '-----------------'
      */
 
